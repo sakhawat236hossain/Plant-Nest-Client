@@ -1,6 +1,28 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+// import useAuth from '../../hooks/useAuth'
+import axios from 'axios';
 
-const DeleteModal = ({ closeModal, isOpen }) => {
+const DeleteModal = ({ closeModal, isOpen,_id ,refetch }) => {
+
+// const {user}=useAuth()
+
+ const handleDelete = async (id) => {
+  try {
+    const res = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/my-inventory/${id}`
+    );
+
+    if (res.data.deletedCount > 0) {
+      refetch()
+      closeModal(); 
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
   return (
     <Dialog
       open={isOpen}
@@ -28,6 +50,7 @@ const DeleteModal = ({ closeModal, isOpen }) => {
             <hr className='mt-8 ' />
             <div className='flex mt-2 justify-around'>
               <button
+              onClick={()=>handleDelete(_id)}
                 type='button'
                 className='cursor-pointer inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
               >
