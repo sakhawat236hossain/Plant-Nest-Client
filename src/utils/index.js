@@ -17,10 +17,21 @@ export const imageUpload = async (imageData) => {
 export const imageUploadCloudinary = async (imageData) => {
   const formData = new FormData();
   formData.append("file", imageData);
-  formData.append("upload_preset", import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+  formData.append(
+    "upload_preset",
+    import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+  );
   const { data } = await axios.post(
-    `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+    `https://api.cloudinary.com/v1_1/${
+      import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
+    }/image/upload`,
     formData
   );
-  return data.secure_url
+  return data.secure_url;
+};
+
+// save or upload user in db
+export const saveOrUploadUser = async (userData) => {
+  const { data } = axios.post(`${import.meta.env.VITE_API_URL}/user`, userData);
+  return data;
 };
